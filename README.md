@@ -19,3 +19,6 @@ API que j'utilise :
 https://www.themoviedb.org/documentation/api/wrappers-libraries
 
 utilisation pour afficher les films qui sortent actuellement au cinéma ou des films qui on un acteur en particulier
+
+
+Maintenant faire des boucles

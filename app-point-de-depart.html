@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>commits-example</title>
+		<style>
+			
+		</style>
+	</head>
+	<body>
+		<div id="demo">
+			<pre>{{videos}}</pre>
+		</div>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/vue@3"></script>
+		<script>
+			const apiURL =
+					"https://api.themoviedb.org/3/movie/157336/videos?api_key=c01344efdef775154d5907c47154a5f4";
+			const config = {
+				header:
+						{
+							Authorization: "bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMDEzNDRlZmRlZjc3NTE1NGQ1OTA3YzQ3MTU0YTVmNCIsInN1YiI6IjYzYmMyMTVjYTZlMmQyMDA5MjEwZDVhMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.20x9aD5wSaDSk7-RMNGf1gvn_njZD9NZgEZNVePZkzU"
+						}
+			};
+
+
+			Vue.createApp({
+				data() {
+					return {
+						videos: []
+					};
+				},
+
+				created: function () {
+					this.fetchDataAsync();
+				},
+				methods: {
+					fetchDataAsync: async function () {
+						try {
+					  	const response = await axios.get(apiURL)
+							console.log (response)
+						  this.videos = response.data.results
+					  } catch(error) {
+					    console.log(error);
+					  }
+					},
+				},
+			}).mount("#demo");
+		</script>
+	</body>
+</html>

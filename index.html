@@ -1,183 +1,52 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VueJS Appli Films</title>
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>commits-example</title>
     <style>
-        @import url(https://fonts.googleapis.com/css?family=Cookie);
 
-        [v-cloak] {
-            display: none;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font: 15px "Open Sans", sans-serif;
-            color: wheat;
-            background-color: gray;
-            text-align: center;
-        }
-
-        nav {
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-        }
-
-        h1 {
-            font-size: 64px;
-            font-family: "Open Sans", cursive;
-            font-weight: normal;
-            line-height: 1;
-        }
-
-        ul {
-            list-style: none;
-            color: wheat;
-            font-size: 20px;
-            font-weight: bold;
-            display: flex;
-            flex-flow: row wrap;
-        ;
-            justify-content: center;
-        }
-
-        nav>ul>li {
-            padding: 10px;
-            border-radius: 25px;
-            /* gap: 100px; */
-            background-color: blue;
-            margin-bottom: 8px;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
     </style>
 </head>
-
 <body>
-<div id="main" v-cloak>
-    <h1>Films</h1>
-    <nav>
-        <ul>
-            <li v-for="genre in genres">{{ genre.name }}</li>
-        </ul>
-    </nav>
-    <div class="films">
-        <div class="film">
-            <div class="film-poster">
-                <img src="https://image.tmdb.org/t/p/w500/6CoRTJTmijhBLJTUNoVSUNxZMEI.jpg" alt="film poster" />
-            </div>
-            <div class="film-details">
-                <h2 class="film-title">Money Plane</h2>
-                <p class="film-description">A professional thief with $40 million in debt and his family's life on
-                    the line must commit one final heist - rob a futuristic airborne casino filled with the world's
-                    most dangerous criminals.</p>
-                <div class="film-genres">
-                    <span class="film-genre">Action</span>
-                    <span class="film-genre">Thriller</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-
+<div id="demo">
+    <pre>{{videos}}</pre>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue@3"></script>
 <script>
-    const demo = Vue.createApp({
+    const apiURL =
+        "https://api.themoviedb.org/3/movie/157336/videos?api_key=c01344efdef775154d5907c47154a5f4";
+    const config = {
+        header:
+            {
+                Authorization: "bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMDEzNDRlZmRlZjc3NTE1NGQ1OTA3YzQ3MTU0YTVmNCIsInN1YiI6IjYzYmMyMTVjYTZlMmQyMDA5MjEwZDVhMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.20x9aD5wSaDSk7-RMNGf1gvn_njZD9NZgEZNVePZkzU"
+            }
+    };
+
+
+    Vue.createApp({
         data() {
             return {
-                genres: [
-                    {
-                        "id": 28,
-                        "name": "Action"
-                    },
-                    {
-                        "id": 12,
-                        "name": "Adventure"
-                    },
-                    {
-                        "id": 16,
-                        "name": "Animation"
-                    },
-                    {
-                        "id": 35,
-                        "name": "Comedy"
-                    },
-                    {
-                        "id": 80,
-                        "name": "Crime"
-                    },
-                    {
-                        "id": 99,
-                        "name": "Documentary"
-                    },
-                    {
-                        "id": 18,
-                        "name": "Drama"
-                    },
-                    {
-                        "id": 10751,
-                        "name": "Family"
-                    },
-                    {
-                        "id": 14,
-                        "name": "Fantasy"
-                    },
-                    {
-                        "id": 36,
-                        "name": "History"
-                    },
-                    {
-                        "id": 27,
-                        "name": "Horror"
-                    },
-                    {
-                        "id": 10402,
-                        "name": "Music"
-                    },
-                    {
-                        "id": 9648,
-                        "name": "Mystery"
-                    },
-                    {
-                        "id": 10749,
-                        "name": "Romance"
-                    },
-                    {
-                        "id": 878,
-                        "name": "Science Fiction"
-                    },
-                    {
-                        "id": 10770,
-                        "name": "TV Movie"
-                    },
-                    {
-                        "id": 53,
-                        "name": "Thriller"
-                    },
-                    {
-                        "id": 10752,
-                        "name": "War"
-                    },
-                    {
-                        "id": 37,
-                        "name": "Western"
-                    }
-                ]
+                videos: []
             };
         },
-        methods: {
 
+        created: function () {
+            this.fetchDataAsync();
         },
-    }).mount("#main");
+        methods: {
+            fetchDataAsync: async function () {
+                try {
+                    const response = await axios.get(apiURL)
+                    console.log (response)
+                    this.videos = response.data.results
+                } catch(error) {
+                    console.log(error);
+                }
+            },
+        },
+    }).mount("#demo");
 </script>
-
+</body>
 </html>
